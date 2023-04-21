@@ -1,0 +1,7 @@
+{
+  "java.project.sourcePaths": [
+    "lesson2/src/main/java/com/example",
+    "Lesson1/src",
+    "lesson2/src"
+  ]
+}
