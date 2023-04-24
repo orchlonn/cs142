@@ -41,10 +41,21 @@ public class Mountain {
 	private void draw() {
 		// height of the mountain (100 by default)
 		int h = (int) (100 * scale);
-		// Mountain
+		// Mountain position.
 		int x1 = x, y1 = y, x2 = x - h / 2, y2 = y + h, x3 = x + h / 2, y3 = y + h;
-		Triangle mountain = new Triangle(x1, y1, x2, y2, x3, y3, Color.GRAY, true);
-		window.add(mountain);
-		// Add the snow on top of the mountain
+		// creating mountain with the given position
+		Triangle mountain = new Triangle(x1, y1, x2, y2, x3, y3, Color.GRAY, true); 
+		// draw mountain on the screen
+		
+		// snow height 
+		window.add(mountain); 
+		int height = (int) (35 * scale);
+		// snow positions.
+		int xa1 = x, ya1 = y, xa2 = x - height / 2, ya2 = y + height, xa3 = x + height / 2, ya3 = y + height;
+		// create snow with the given position
+		Triangle topOfMountain = new Triangle(xa1, ya1,xa2, ya2, xa3, ya3, Color.WHITE, true);
+		// draw snnow on the screen
+		window.add(topOfMountain);
+		
 	}
 }

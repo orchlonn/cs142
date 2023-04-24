@@ -34,10 +34,25 @@ public class CountrysideScene {
 		window.add(sky);
 
 		// Draw the elements in the window
-		// two mountains
+		// Sun
+		new Sun(55, 10, window);
+		
+		// three mountains
 		new Mountain(50, 20, 0.9, window);
 		new Mountain(110, 25, 1.8, window);
-
+		new Mountain(260, 40, 1.6, window);
+		
+		// three apple tree
+		new AppleTree(330, 110, 0.9, window);
+		new AppleTree(390, 100, 1.3, window);
+		new AppleTree(450, 150, 1.55, window);
+		
+		// three cars 
+		new Car(30, 230, 1.2, window, true);
+		new Car(230, 300, 1.7, window, true);
+		new Car(370, 200, 0.7, window, false);
+		
+		
 		// Show the scene
 		window.doRepaint();
 	}
