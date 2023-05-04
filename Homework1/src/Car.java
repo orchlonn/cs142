@@ -12,7 +12,7 @@ public class Car {
 	// graphics window that displays the mountation
 	private GWindow window;
 	// check the car's position
-	private boolean isRight;
+	private boolean positionBoolean;
 	// colors
 	Color carColor = new Color(184, 46, 96);
 	Color carLightColor = Color.yellow;
@@ -26,12 +26,12 @@ public class Car {
 	 * @param scale  the scale of the drawing of the car
 	 * @param window the graphics window that displays the car
 	 */
-	public Car(int x, int y, double scale, GWindow window, boolean isRight) {
+	public Car(int x, int y, double scale, GWindow window, boolean positionBoolean) {
 		this.x = x;
 		this.y = y;
 		this.scale = scale;
 		this.window = window;
-		this.isRight = isRight;
+		this.positionBoolean = positionBoolean;
 		
 		// draw the car
 		draw();
@@ -79,12 +79,12 @@ public class Car {
 		int lightHeight = (int) (height / 1.8);
 		int lightWidth = (int) (width/ 10.8);
 		// checking the car's positions
-		if(isRight == true) {
-			// if the car located to the right side, these following 2 lines of code would work.
+		if(positionBoolean == true) {
+			// if the positionBoolean is true, these following 2 lines of code would work and the car would face to the right side.
 			Oval carLight = new Oval(x + width - lightWidth, y, lightWidth, lightHeight, carLightColor, true);
 			window.add(carLight);
 		} else {
-			// if the car located to the left side, these following 2 lines of code would work. (without any changes on x axis)
+			// if the positionBoolean is false, these following 2 lines of code would work and the car would face to the left side.
 			Oval carLight = new Oval(x, y, lightWidth, lightHeight, carLightColor, true);
 			window.add(carLight);
 		};
