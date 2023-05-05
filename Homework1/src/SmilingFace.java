@@ -49,7 +49,6 @@ public class SmilingFace {
 	 * @param dy y-displacement
 	 */
 	public void moveBy(int dx, int dy) {
-        System.out.println(dx);
 		this.head.moveBy(dx, dy);
 		this.blackCircle.moveBy(dx, dy);
 		this.yellowCircle.moveBy(dx, dy);

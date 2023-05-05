@@ -36,6 +36,21 @@ public class AppleTree {
 		// draw the apple tree
 		draw();
 	}
+	public void ripen(){
+		// color changing logic
+		if(appleColor == Color.green){
+			// if the color is green, change the color to the yellow.
+			this.appleColor = Color.yellow;
+		} else if (appleColor == Color.yellow) {
+			// if the color is red, change the color to the red.
+			this.appleColor = Color.red;
+		} else {
+			// otherwise, the color is red, so turn it into green.
+			appleColor = Color.green;
+		}
+		draw();
+	}
+
 
 	/**
 	 * Draws an apple tree

@@ -10,12 +10,14 @@ public class Mountain {
 	// location of the mountain
 	// (what point (x,y) is is up to you. Here, (x,y) is taken
 	// to be the top of the mountain)
-	private int x, y;
+	private int x, y, snowHeight;
 	// scale of the drawing
 	private double scale;
 	// graphics window that displays the mountation
 	private GWindow window;
 
+	// Mountain's parts
+	private Triangle mountain, topOfMountain;
 	/**
 	 * Draws a mountain at the given location with the given scale in the given
 	 * graphics window
@@ -31,7 +33,18 @@ public class Mountain {
 		this.scale = scale;
 		this.window = window;
 
+		this.snowHeight = (int) (35 * scale);
 		// draw the mountain
+		draw();
+	}
+	public void meltSnow(){
+		// snow height 
+		this.snowHeight -= scale * .005;
+
+		// if the snow height == 0 (which means snow melts), everything resets
+		if(snowHeight == 0){
+			this.snowHeight = (int) (35 * scale);
+		}
 		draw();
 	}
 
@@ -44,18 +57,17 @@ public class Mountain {
 		// Mountain position.
 		int x1 = x, y1 = y, x2 = x - h / 2, y2 = y + h, x3 = x + h / 2, y3 = y + h;
 		// creating mountain with the given position
-		Triangle mountain = new Triangle(x1, y1, x2, y2, x3, y3, Color.GRAY, true); 
+		this.mountain = new Triangle(x1, y1, x2, y2, x3, y3, Color.GRAY, true); 
 		// draw mountain on the screen
-		
-		// snow height 
-		window.add(mountain); 
-		int height = (int) (35 * scale);
+		window.add(this.mountain); 
+
+
 		// snow positions.
-		int xa1 = x, ya1 = y, xa2 = x - height / 2, ya2 = y + height, xa3 = x + height / 2, ya3 = y + height;
+		int xa1 = x, ya1 = y, xa2 = x - this.snowHeight / 2, ya2 = y + this.snowHeight, xa3 = x + this.snowHeight / 2, ya3 = y + this.snowHeight;
 		// create snow with the given position
-		Triangle topOfMountain = new Triangle(xa1, ya1,xa2, ya2, xa3, ya3, Color.WHITE, true);
+		this.topOfMountain = new Triangle(xa1, ya1,xa2, ya2, xa3, ya3, Color.WHITE, true);
 		// draw snnow on the screen
-		window.add(topOfMountain);
+		window.add(this.topOfMountain);
 		
 	}
 }

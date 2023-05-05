@@ -58,7 +58,9 @@ public class FunnyPicture extends GWindowEventAdapter {
 		// window
 		this.window.suspendRepaints();
 
+		
 		if (this.animationCounter <= 100) {
+			System.out.println(animationCounter);
 			// Move down and to the right
 			this.face1.changeScale(1.05);
 			this.face1.moveBy(1, 1);
@@ -86,5 +88,5 @@ public class FunnyPicture extends GWindowEventAdapter {
 	public static void main(String[] args) {
 		new FunnyPicture();
 	}
-
+	
 }
