@@ -6,12 +6,13 @@ import uwcse.graphics.Oval;
 
 public class SunAndCloud {
 	// Declare your instance fields here
-	private int x, y;
+	private int x, y, sunMeasure;
 	// graphics window that displays the mountation
 	private GWindow window;
 	// Declare your instance fields here
 	private double scale;
 
+	Oval sun;
 	/**
 	 * Creates a Sun
 	 * 
@@ -26,23 +27,52 @@ public class SunAndCloud {
 		this.scale = scale;
 		this.window = window;
 		
+		this.sunMeasure = (int) (40 * scale);
+
 		// draw the sun
-		draw();
+		drawSun();
+		drawCloud();
+
+	}
+	public void doAction(int dx, double dy) {
+		// remove the sun afer it moves
+		window.remove(sun);
+
+		// sun is shining
+		this.sun.moveBy(dx, (int) dy);
+		
+
+		// if the sun goes up to when y = 55, 
+		if(y >= -55){
+			x += dx;
+			y -= dy;
+		} 
+		// when the sun shine, the sun would be bigger which means more hotter and hotter.
+		if( y == -56){
+			this.sunMeasure = (int) (50 * scale);
+		}
+		
+		drawSun();
 	}
 
 	/**
 	 * Draws a sun and cloud
 	 */
-	private void draw() {
-		int h = (int) (100 * scale);
+	private void drawSun() {
 		Sun();
+		
+	}
+	
+	private void drawCloud() {
+		int h = (int) (100 * scale);
 		Cloud(x + 10, y, (int) (h / 1.5), 22);
 		Cloud(x + 150, y + 40,(int) (h / 1.8), 22);
 		Cloud(x + 230, y, (int) (h / 1.2), 22);
+		
 	}
-	
+
 	private void Sun() {
-		Oval sun= new Oval(x, y, 50, 50, Color.yellow, true);
+		sun= new Oval(x - 70, y + 50, sunMeasure, sunMeasure, Color.yellow, true);
 		window.add(sun);
 	}
 	

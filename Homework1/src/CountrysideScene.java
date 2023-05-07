@@ -81,6 +81,7 @@ public class CountrysideScene extends GWindowEventAdapter {
 	public void timerExpired(GWindowEvent we) {
 		this.window.suspendRepaints();
 
+		this.myElement.doAction(2, 2);
 		// Change the colors of the apples on the trees
 		this.tree1.ripen();
 		this.tree2.ripen();
@@ -91,11 +92,11 @@ public class CountrysideScene extends GWindowEventAdapter {
 		this.car2.moveBy(20,1);
 
 		// Change the size of the snow on the mountains
-		this.mountain1.meltSnow();
-		this.mountain2.meltSnow();
-		this.mountain3.meltSnow();
+		this.mountain1.meltSnow(animationCounter);
+		this.mountain2.meltSnow(animationCounter);
+		this.mountain3.meltSnow(animationCounter);
 
-		// this.myElement.doAction();
+
 
 		this.window.resumeRepaints();
 

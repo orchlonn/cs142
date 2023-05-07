@@ -33,18 +33,23 @@ public class Mountain {
 		this.scale = scale;
 		this.window = window;
 
+		// set the snow height
 		this.snowHeight = (int) (35 * scale);
 		// draw the mountain
 		draw();
 	}
-	public void meltSnow(){
-		// snow height 
-		this.snowHeight -= scale * .005;
+	public void meltSnow(int cntr){
+		// the snow will not melt until the cntr = 32 which means, sun is shining while the cntr is up 32.
+		// when the cntr reaches 32, it melts so fast.
+		if(cntr > 32){
+			this.snowHeight -= scale * 1;
 
-		// if the snow height == 0 (which means snow melts), everything resets
-		if(snowHeight == 0){
-			this.snowHeight = (int) (35 * scale);
+			// if the snow height == 0 (which means snow melts), everything resets
+			if(snowHeight == 0){
+				this.snowHeight = (int) (45 * scale);
+			}
 		}
+		
 		draw();
 	}
 
