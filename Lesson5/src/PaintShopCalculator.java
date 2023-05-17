@@ -2,6 +2,8 @@
  * Computes the amount of paint needed to paint a room
  */
 
+ import java.text.DecimalFormat;
+
  public class PaintShopCalculator {
 
     // variables
@@ -21,8 +23,15 @@
 
 	public final double HALFPINT = 2.25;
 
+	public double totalCost = 0;
+
 	// Area that can be painted with one gallon of paint (in square inches)
 	public final double AREA_PER_GALLON = 25000.0;
+
+	// global variables
+	public int area, halfGallons, totalGallon, totalQuarts, totalPints, gallonsPacket, oneGallon = 0, totalHalfPints;
+	public long cents;
+	public double customerGallon, afterBonusCost = 0;
 
 	/**
 	 * Initializes this PaintShopCalculator with the room measurements. For example,
@@ -46,84 +55,110 @@
 
     // here is the calculateFeet function which calculates area and converts to the inches.
     private void calculateFeet(int heightFeet, int heightInches, int lengthFeet, int lengthInches, int widthFeet, int widthInches){
-        int area = 0, feetToInch = 144;
+        int  feetToInch = 12;
 
 
-        if(heightFeet == 0 || widthFeet == 0 || lengthFeet == 0){
-            lengthFeet = (lengthFeet == 0) ?  lengthFeet = lengthInches : lengthFeet * feetToInch;
-            widthFeet = (widthFeet == 0) ?  widthFeet =  widthInches : widthFeet * feetToInch;
-            heightFeet =(heightFeet == 0) ?  heightFeet =  heightInches : heightFeet * feetToInch;
-        } 
+        heightFeet = heightFeet * feetToInch + heightInches;
+		widthFeet = widthFeet * feetToInch + widthInches;
+		lengthFeet = lengthFeet * feetToInch + lengthInches;
 
 		// find the area with the given dimensions
         area = (lengthFeet * widthFeet) + 2 * (widthFeet* heightFeet) + (lengthFeet * heightFeet) * 2;
-        double customerGallon;
-		// customer needed gallons
-        customerGallon  = (area * feetToInch) / AREA_PER_GALLON;
 
-        int totalGallon = (int) (customerGallon);
+
+		// customer needed gallons
+        customerGallon  = area  / AREA_PER_GALLON;
+		System.out.println(customerGallon + "ggg");
+        totalGallon = (int) (customerGallon);
         double leftGallons;
         leftGallons = customerGallon - totalGallon;
 
-        int halfGallons = (int) (leftGallons / 0.5);
+		// if the total gallons are over than 5, the total cost should be 124$ for 5 gallons.
+		if(totalGallon >= 5){
+			gallonsPacket = totalGallon / 5;
+			totalCost = totalCost + gallonsPacket * 124;
+			// For example,  if the total gallon is 12, 10 would be 2 packs, so cost = 124 * 2. Then 12 - 10 = 2. 2 gallons would left. So, we need that left 2 gallons. 
+			totalGallon -= gallonsPacket * 5;
+			oneGallon = totalGallon;
+		}
+		totalCost = totalCost +  totalGallon * 25.10;
+		
+
+		// find half gallons and calculating.
+        halfGallons = (int) (leftGallons / 0.5);
         double halfGallonsAmount = halfGallons * 0.5;
         System.out.println("total half gallons "+ halfGallons);
         leftGallons = leftGallons - halfGallonsAmount; 
+		totalCost = totalCost + halfGallons * 13;
 
-
-        int totalQuarts = (int) (leftGallons / 0.25);
+		// find quarts and calculating.
+        totalQuarts = (int) (leftGallons / 0.25);
         double quartsAmount = totalQuarts * 0.25;
         System.out.println("total quarts "+ totalQuarts);
         leftGallons = leftGallons - quartsAmount; 
+		totalCost = totalCost + totalQuarts * 6.70;
 
-
-        int totalPints = (int) (leftGallons / 0.125);
+		// find pints and calculating.
+        totalPints = (int) (leftGallons / 0.125);
         double pintsAmount = totalPints * 0.125;
         System.out.println("total pints "+ totalPints);
         leftGallons = leftGallons - pintsAmount; 
+		totalCost = totalCost + totalPints * 3.95;
 
-
-        int totalHalfPints = (int) (leftGallons / 0.0625);
+		// find half pints and calculating.
+		totalHalfPints = (int) (leftGallons / 0.0625);
         double halfPintsAmount = totalHalfPints * 0.0625;
         System.out.println("total half pints "+ totalHalfPints);
         leftGallons = leftGallons - halfPintsAmount; 
-
-        System.out.println("left gallons " + leftGallons);
-
-
+		// if the left gallnons are lesser than 0.0625 (which means can't be an one half pints), the cost will be added by one half pints's price
+		if(leftGallons < 0.0625){
+			totalCost += 2.25;
+			totalHalfPints = 1;
+		} else{
+			totalCost = totalCost + totalHalfPints * 2.25;
+		}
 		
+		DecimalFormat df = new DecimalFormat("0.00");
+		String roundedDouble = df.format(totalCost);
+		totalCost = Double.valueOf(roundedDouble);
 
+		cents = Math.round(totalCost * 100) % 100;
+		int lastDigit;
+		String roundedTotalCost;
+		if(cents % 10 == 0){
+			lastDigit = (int) (cents / 10);
+		} else {
+			lastDigit = (int) (cents % 10);
+		}
+		// if the total cost equals to 5 and odd, its declined by 124 from the total cost.
+		if(lastDigit % 5 == 0 && lastDigit % 2 != 0 && customerGallon > 5){
+			roundedTotalCost = df.format(totalCost - 124);
+			afterBonusCost = Double.valueOf(roundedTotalCost);
+		}
+		System.out.println(customerGallon);
     }
 
-	/**
-	 * Returns as a string the result of the computation. The string should list the
-	 * exact amount of paint needed (with 3 digits after the decimal point), the
-	 * number and type of paint containerthe output (no 0 one gallon container).
-	 * 
-	 * Here is an example with height=s needed, and the price (with 2 digits
-	 * after the decimal point). Pay attention to the spelling (container versus
-	 * containers) and the quality of 7'3'', length=20'4'' and width=18'7'':
-	 * 
-	 * <pre>
-		For this job, you need 5.427 gallons of paint.
-		You will need to purchase
-			1 five-gallon container
-			1 one-quart container
-			1 one-pint container
-			1 one-half-pint container
-		
-		Because the amount of cents (90c) in the cost
-		is not odd and divisible by 5, no discount is
-		applied.
-	
-			Your total is $136.90
-			
-			Thank you for your business!
-	 * </pre>
-	 */
+
 	public String toString() {
-		String s = "\tThank you for your business!"; // CHANGE THIS
         calculateFeet(heightFeet, heightInches, lengthFeet, lengthInches, widthFeet, widthInches);
+
+		String s = "For this job, you need "+ customerGallon + " gallons of paint.\n" 
+		+ "You will need to purchase \n     "
+		+ gallonsPacket + " five-gallon containers \n     "
+		+ oneGallon + " one-gallon containers \n     "
+		+ halfGallons + " half-gallon containers \n     "
+		+ totalQuarts + " one-quart containers \n     "
+		+ totalPints + " one-pints containers \n     "
+		+ totalHalfPints + " one-half-pints containers \n\n"
+																		
+		+ "The total cost is $" + totalCost + "\n"
+		+ "However, because the amount of cents (" + cents + "c)\n" 
+		+ "in the cost is odd and divisible by 5 \n"
+		+ "you get 1 five-gallon container for free! \n\n     "
+
+		+ "The total cost is $" + afterBonusCost + "\n\n     "
+
+		+ "Thank you for your business!"; 
 		return s;
 	}
 }
