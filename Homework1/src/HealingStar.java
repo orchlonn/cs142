@@ -12,6 +12,7 @@ public class HealingStar extends MovingObject {
 
 
     public HealingStar(GWindow window, Point center) {
+        
 		super(window, center);
 		// this.lives = (int) (Math.random() * 3 + 1);
 

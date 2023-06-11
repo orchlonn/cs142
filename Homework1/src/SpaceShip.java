@@ -39,7 +39,7 @@ public class SpaceShip extends MovingObject {
 	 */
 	public void move() {
 		// A space ship moves left or right
-		if (this.direction != MovingObject.LEFT && this.direction != MovingObject.RIGHT) {
+		if (this.direction != MovingObject.LEFT && this.direction != MovingObject.RIGHT && this.direction != MovingObject.UP && this.direction != MovingObject.DOWN) {
 			throw new IllegalArgumentException("Invalid space ship direction");
 		}
 
@@ -50,6 +50,7 @@ public class SpaceShip extends MovingObject {
 
 		do {
 			int x = this.center.x;
+			int y = this.center.y;
 			switch (this.direction) {
 			case LEFT:
 				x -= step;
@@ -57,16 +58,30 @@ public class SpaceShip extends MovingObject {
 			case RIGHT:
 				x += step;
 				break;
+			case UP:
+				y += step;
+				break;				
+			case DOWN:
+				y -= step;
+				break;
 			}
 
 			// Is the new position in the window?
-			if (x + this.boundingBox.getWidth() / 2 >= this.window.getWindowWidth())
+			if (x + this.boundingBox.getWidth() / 2 >= this.window.getWindowWidth() - 300)
 			// past the right edge
 			{
 				isMoveOK = false;
 				this.direction = MovingObject.LEFT;
-			} else if (x - this.boundingBox.getWidth() / 2 <= 0) // past the
-			// left edge
+			} else if (y + this.boundingBox.getHeight() / 2 >= this.window.getWindowHeight()) // past the top edge
+			{
+				isMoveOK = false;
+				this.direction = MovingObject.DOWN;
+			} else if (y - this.boundingBox.getHeight() / 2 <= 0) // past the bottom edge
+			{
+				isMoveOK = false;
+				this.direction = MovingObject.UP;
+			}
+			else if (x - this.boundingBox.getWidth() / 2 <= 0) // past the left edge
 			{
 				isMoveOK = false;
 				this.direction = MovingObject.RIGHT;
@@ -74,6 +89,7 @@ public class SpaceShip extends MovingObject {
 			{
 				isMoveOK = true;
 				this.center.x = x;
+				this.center.y = y;
 			}
 		} while (!isMoveOK);
 

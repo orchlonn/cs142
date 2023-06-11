@@ -4,6 +4,7 @@
 // How is your new alien different from the one described by the Alien class?
 //
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,7 @@ import uwcse.graphics.GWindowEvent;
 import uwcse.graphics.GWindowEventAdapter;
 import uwcse.graphics.Oval;
 import uwcse.graphics.Rectangle;
+import uwcse.graphics.TextShape;
 
 /**
  * A SpaceInvader displays a fleet of alien ships and a space ship. The player
@@ -58,7 +60,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 	 * Constructs a space invader game
 	 */
 	public SpaceInvader() {
-		this.window = new GWindow("Space invaders", 500, 500);
+		this.window = new GWindow("Space invaders", 800, 500);
 		this.window.setExitOnClose();
 		this.window.addEventHandler(this); // this SpaceInvader handles all of
 		// the events fired by the graphics
@@ -67,7 +69,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 		// Display the game rules
 		String rulesOfTheGame = "Save the Earth! Destroy all of the aliens ships.\n" + "To move left, press '<'.\n"
 				+ "To move right, press '>'.\n" + "To shoot, press the space bar.\n" + "To quit, press 'Q'.";
-		JOptionPane.showMessageDialog(null, rulesOfTheGame, "Space invaders", JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, rulesOfTheGame, "Space invaders", JOptionPane.INFORMATION_MESSAGE);
 		this.initializeGame();
 	}
 
@@ -115,8 +117,67 @@ public class SpaceInvader extends GWindowEventAdapter {
 		y = this.window.getWindowHeight() - SpaceShip.HEIGHT / 2;
 		this.spaceShip = new SpaceShip(this.window, new Point(x, y));
 
+		//! side menu bar
+		sideMenuBar();
+		
 		// start timer events
 		this.window.startTimerEvents(this.animationPeriod);
+	}
+
+	public void sideMenuBar(){
+		//! side bar 
+		Rectangle sideBRectangle = new Rectangle(500, 0, 300, 500,
+		Color.white, true);
+		this.window.add(sideBRectangle);
+
+		//! game instruction texts
+		gameInstructionTexts();
+
+		//! names font and text
+		TextShape namesText = new TextShape("Erdenetuya Batgerel and Orchlon Chinbat", 505, 480, Color.black);
+		Font namesFont = new Font("Arial", Font.BOLD, 13);
+		namesText.setFont(namesFont);
+		this.window.add(namesText);	
+	}
+
+	public void gameInstructionTexts(){
+		// instruction texts 
+		String text0 = "Game instruction:";
+		String text1 = "Press 'a' to move left.";
+		String text2 = "Press 'd' to move right.";
+		String text3 = "Press 'w' to move forward.";
+		String text4 = "Press 's' to move backward.";
+		String text5 = "Press 'q' to quit the game.";
+		String text6 = "Press spacebar to shoot.";
+
+		// text shapes
+		TextShape textShape0 = new TextShape(text0, 505,0, Color.black);
+		TextShape textShape1 = new TextShape(text1, 505,20, Color.black);
+		TextShape textShape2 = new TextShape(text2, 505, 35, Color.black);
+		TextShape textShape3 = new TextShape(text3, 505, 50, Color.black);
+		TextShape textShape4 = new TextShape(text4, 505, 65, Color.black);
+		TextShape textShape5 = new TextShape(text5, 505, 80, Color.black);
+		TextShape textShape6 = new TextShape(text6, 505, 95, Color.black);
+
+		// instruction fonts and set fonts on the texts
+		Font instructionTextsFont1 = new Font("Arial", Font.ITALIC, 14);
+		Font instructionTextsFont2 = new Font("Arial", Font.BOLD, 18);
+		textShape0.setFont(instructionTextsFont2);
+		textShape1.setFont(instructionTextsFont1);
+		textShape2.setFont(instructionTextsFont1);
+		textShape3.setFont(instructionTextsFont1);
+		textShape4.setFont(instructionTextsFont1);
+		textShape5.setFont(instructionTextsFont1);
+		textShape6.setFont(instructionTextsFont1);
+
+		// add to the display
+		this.window.add(textShape0);
+		this.window.add(textShape1);
+		this.window.add(textShape2);
+		this.window.add(textShape3);
+		this.window.add(textShape4);
+		this.window.add(textShape5);
+		this.window.add(textShape6);
 	}
 
 	/**
@@ -163,7 +224,17 @@ public class SpaceInvader extends GWindowEventAdapter {
 		dirFromKeyboard = MovingObject.RIGHT;
 		break;
 
-		case '-': // shoot at the aliens
+		case 's': // move the spaceship to the backward
+		this.action = SpaceInvader.SET_SPACESHIP_DIRECTION;
+		dirFromKeyboard = MovingObject.UP;
+		break;
+
+		case 'w': // move the spaceship to the forward
+		this.action = SpaceInvader.SET_SPACESHIP_DIRECTION;
+		dirFromKeyboard = MovingObject.DOWN;
+		break;
+
+		case ' ': // shoot at the aliens
 			this.action = SpaceInvader.SHOOT;
 			break;
 
