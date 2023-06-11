@@ -55,7 +55,7 @@
 
     // here is the calculateFeet function which calculates area and converts to the inches.
     private void calculateFeet(int heightFeet, int heightInches, int lengthFeet, int lengthInches, int widthFeet, int widthInches){
-        int  feetToInch = 12;
+        int feetToInch = 12;
 
 
         heightFeet = heightFeet * feetToInch + heightInches;
@@ -68,7 +68,6 @@
 
 		// customer needed gallons
         customerGallon  = area  / AREA_PER_GALLON;
-		System.out.println(customerGallon + "ggg");
         totalGallon = (int) (customerGallon);
         double leftGallons;
         leftGallons = customerGallon - totalGallon;
@@ -87,34 +86,30 @@
 		// find half gallons and calculating.
         halfGallons = (int) (leftGallons / 0.5);
         double halfGallonsAmount = halfGallons * 0.5;
-        System.out.println("total half gallons "+ halfGallons);
         leftGallons = leftGallons - halfGallonsAmount; 
 		totalCost = totalCost + halfGallons * 13;
 
 		// find quarts and calculating.
         totalQuarts = (int) (leftGallons / 0.25);
         double quartsAmount = totalQuarts * 0.25;
-        System.out.println("total quarts "+ totalQuarts);
         leftGallons = leftGallons - quartsAmount; 
 		totalCost = totalCost + totalQuarts * 6.70;
 
 		// find pints and calculating.
         totalPints = (int) (leftGallons / 0.125);
         double pintsAmount = totalPints * 0.125;
-        System.out.println("total pints "+ totalPints);
         leftGallons = leftGallons - pintsAmount; 
 		totalCost = totalCost + totalPints * 3.95;
 
 		// find half pints and calculating.
 		totalHalfPints = (int) (leftGallons / 0.0625);
         double halfPintsAmount = totalHalfPints * 0.0625;
-        System.out.println("total half pints "+ totalHalfPints);
         leftGallons = leftGallons - halfPintsAmount; 
 		// if the left gallnons are lesser than 0.0625 (which means can't be an one half pints), the cost will be added by one half pints's price
-		if(leftGallons < 0.0625){
+		if (leftGallons < 0.0625){
 			totalCost += 2.25;
 			totalHalfPints = 1;
-		} else{
+		} else {
 			totalCost = totalCost + totalHalfPints * 2.25;
 		}
 		
@@ -135,30 +130,67 @@
 			roundedTotalCost = df.format(totalCost - 124);
 			afterBonusCost = Double.valueOf(roundedTotalCost);
 		}
-		System.out.println(customerGallon);
     }
 
 
 	public String toString() {
         calculateFeet(heightFeet, heightInches, lengthFeet, lengthInches, widthFeet, widthInches);
-
-		String s = "For this job, you need "+ customerGallon + " gallons of paint.\n" 
-		+ "You will need to purchase \n     "
-		+ gallonsPacket + " five-gallon containers \n     "
-		+ oneGallon + " one-gallon containers \n     "
-		+ halfGallons + " half-gallon containers \n     "
-		+ totalQuarts + " one-quart containers \n     "
-		+ totalPints + " one-pints containers \n     "
-		+ totalHalfPints + " one-half-pints containers \n\n"
+		DecimalFormat df = new DecimalFormat("0.000");
+		String roundedCustomerGallon = df.format(customerGallon);
+		String s = ("For this job, you need "+ roundedCustomerGallon + " gallons of paint.\n"
+		+ "You will need to purchase \n     ");
+		if(gallonsPacket != 0){
+			if(gallonsPacket == 1){
+				s += String.format(gallonsPacket + " five-gallon container\n     ");
+			} else {
+				s += String.format(gallonsPacket + " five-gallon containers\n    ");	
+			}
+		}
+		if(oneGallon != 0){
+			if(oneGallon == 1){
+				s+= String.format(oneGallon +" one-gallon container \n     ");
+			} else {
+				s+= String.format(oneGallon +" one-gallon containers \n     ");
+			}
+		}
+		if(halfGallons != 0){
+			if(halfGallons == 1){
+				s += String.format(halfGallons + " half-gallon container \n     ");
+			} else {
+				s += String.format(halfGallons + " half-gallon containers \n     ");
+			}
+		}
+		if(totalQuarts != 0){
+			if(totalQuarts == 1){
+				s += String.format(totalQuarts + " one-quart container \n     ");
+			} else {
+				s += String.format(totalQuarts + " one-quart containers \n     ");
+			}
+		}
+		if(totalPints != 0){
+			if(totalPints == 1){
+				s += String.format(totalPints + " one-pints container \n     ");
+			} else {
+				s += String.format(totalPints + " one-pints containers \n     ");
+			}
+		 }
+		 if(totalHalfPints != 0){
+			if(totalHalfPints == 1){
+				s += String.format(totalHalfPints + " one-half-pints containers \n");
+			}
+		 }
 																		
-		+ "The total cost is $" + totalCost + "\n"
-		+ "However, because the amount of cents (" + cents + "c)\n" 
-		+ "in the cost is odd and divisible by 5 \n"
-		+ "you get 1 five-gallon container for free! \n\n     "
-
-		+ "The total cost is $" + afterBonusCost + "\n\n     "
-
-		+ "Thank you for your business!"; 
+		s += String.format("\nThe total cost is $" + totalCost + "\n");
+		
+		if(afterBonusCost != 0){
+			s += String.format("However, because the amount of cents (" + cents + "c)\n"  
+			+ "in the cost is odd and divisible by 5, \n"
+			+ "you get 1 five-gallon container for free! \n\n     "
+	
+			+ "The total cost is $" + afterBonusCost + "\n\n     "
+	
+			+ "Thank you for your business!");
+		}
 		return s;
 	}
 }
