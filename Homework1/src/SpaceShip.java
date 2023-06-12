@@ -21,6 +21,9 @@ public class SpaceShip extends MovingObject {
 	/** Is the space ship shooting with its laser? */
 	private boolean isShooting;
 
+	//! ship lives
+ 	int shipLives = 3;
+
 	/**
 	 * Constructs this SpaceShip
 	 */
@@ -102,7 +105,7 @@ public class SpaceShip extends MovingObject {
 	 * 
 	 * @param aliens the ArrayList of aliens
 	 */
-	public void shoot(ArrayList<Alien> aliens) {
+	public void shoot(ArrayList<Alien> aliens, ArrayList<HealingStar> healingStars) {
 		this.isShooting = true;
 
 		for(int i = 0; i < aliens.size(); i++){
@@ -118,7 +121,18 @@ public class SpaceShip extends MovingObject {
 					i--;
 				}
 			}
+		}
 
+		//! for healing star shooting
+		for(int i = 0; i < healingStars.size(); i++){
+			HealingStar h = healingStars.get(i);
+			int hLeft = h.getBoundingBox().getX();
+			int hRight = h.getBoundingBox().getX() + h.getBoundingBox().getWidth();	
+
+			if(hLeft <= center.x && center.x <= hRight){
+				shipLives ++;
+
+			}
 		}
 	}
 

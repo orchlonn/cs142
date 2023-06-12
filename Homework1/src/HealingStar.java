@@ -2,13 +2,14 @@ import java.awt.Color;
 import java.awt.Point;
 
 import uwcse.graphics.GWindow;
-import uwcse.graphics.Line;
 import uwcse.graphics.Oval;
 import uwcse.graphics.Rectangle;
 import uwcse.graphics.Shape;
 public class HealingStar extends MovingObject {
     // Size of a healing star
-	public static final int RADIUS = 10;
+	public static final int RADIUS = 15;
+
+    SpaceShip spaceShip;
 
     public HealingStar(GWindow window, Point center) {        
 		super(window, center);
@@ -24,17 +25,18 @@ public class HealingStar extends MovingObject {
 		return this.center;
 	}
 
+
     @Override
     public void move() {
         // Distance covered by the space ship in the one step
-        int step = boundingBox.getWidth() / 2;
+        int step = boundingBox.getWidth() / 5;
 
         // move the alien down
         center.x += step;
 
         // if the healing star is past the bottom of the window, move it back to the top.
         if(center.x + boundingBox.getWidth() / 2 > window.getWindowWidth() - 300) {
-            center.x = 10 * HealingStar.RADIUS;
+            center.x = 1 * HealingStar.RADIUS;
         }
 
         // Show the new location of this healing star
@@ -54,8 +56,8 @@ public class HealingStar extends MovingObject {
 			this.window.add(this.shapes[i]);
 
 		// Bounding box of this Alien
-		this.boundingBox = new Rectangle(this.center.x - 2 * RADIUS, this.center.y - 2 * RADIUS, 4 * RADIUS,
-				4 * RADIUS);
+		this.boundingBox = new Rectangle(this.center.x - 3 * RADIUS, this.center.y -3 * RADIUS, 5 * RADIUS,
+				5 * RADIUS);
 		this.window.doRepaint();
 	}
 }

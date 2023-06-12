@@ -62,8 +62,6 @@ public class SpaceInvader extends GWindowEventAdapter {
 	//! Lost message
 	private String lostMessage = "You lost :(";
 
-	//! ship lives
-	private int shipLives = 3;
 
 	//! user score
 	private int userScore = 0;
@@ -210,7 +208,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 			this.spaceShip.setDirection(this.dirFromKeyboard);
 			break;
 		case SpaceInvader.SHOOT:
-			this.spaceShip.shoot(this.aliens);
+			this.spaceShip.shoot(this.aliens, this.healingStar);
 			break;
 		}
 
@@ -297,9 +295,9 @@ public class SpaceInvader extends GWindowEventAdapter {
 			//! finding is space ship damaged or not?
 			if(xLeft == sLeft  && sRight == xRight && sTop == xBottom){
 				//! Since the spaceship is same width as aliens.
-				shipLives --;
+				spaceShip.shipLives --;
 			}
-			
+				
 		}
 
 		for (HealingStar star : healingStar) {
@@ -314,10 +312,10 @@ public class SpaceInvader extends GWindowEventAdapter {
 		this.window.resumeRepaints();
 
 		//! checking the lives of the ship
-		if(shipLives == 0) {
+		if(spaceShip.shipLives == 0) {
 			if (anotherGame(lostMessage)) {
 				initializeGame();
-				shipLives = 3;
+				spaceShip.shipLives = 3;
 			} else {
 				System.exit(0);	
 			}	
@@ -325,7 +323,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 		
 		//! show lives of the ship
 		Rectangle livesOfShipRectangle = new Rectangle(520, 130, 250,80, Color.blue, true);	
-		String strLives = "" + shipLives;
+		String strLives = "" + spaceShip.shipLives;
 		TextShape livesofShapeText = new TextShape(strLives, 535, 170, Color.CYAN);
 		
 		Font shipLiveFont = new Font("Arial", Font.BOLD, 18);

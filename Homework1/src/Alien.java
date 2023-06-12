@@ -22,7 +22,7 @@ public class Alien extends MovingObject {
 	// When 0, this Alien is dead
 	private int lives;
 
-	/**
+	/*
 	 * Creates an alien in the graphics window
 	 * 
 	 * @param window the GWindow this Alien belongs to
