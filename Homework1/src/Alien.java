@@ -45,7 +45,6 @@ public class Alien extends MovingObject {
         if(lives == 0){
             erase();
         }
-
 	}
 
 	/**

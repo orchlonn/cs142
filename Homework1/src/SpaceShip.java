@@ -31,7 +31,6 @@ public class SpaceShip extends MovingObject {
 		// Draw this SpaceShip
 		this.draw();
 	}
-
 	/**
 	 * Moves this SpaceShip. The space ship should be constantly moving. Select a
 	 * new direction if the space ship can't move in the current direction of
@@ -97,7 +96,6 @@ public class SpaceShip extends MovingObject {
 		this.erase();
 		this.draw();
 	}
-
 	/**
 	 * Shoots at the aliens If an alien is hit, decrease its number of lives or
 	 * remove it from the array list if it is dead.

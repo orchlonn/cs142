@@ -53,9 +53,20 @@ public class SpaceInvader extends GWindowEventAdapter {
 	// The aliens
 	private ArrayList<Alien> aliens;
 
+	//! The healingStar
+	private ArrayList<HealingStar> healingStar;
+
 	// Is the current game over?
     private String messageGameOver = "Congratulations, you saved the earth!";
 
+	//! Lost message
+	private String lostMessage = "You lost :(";
+
+	//! ship lives
+	private int shipLives = 3;
+
+	//! user score
+	private int userScore = 0;
 	/**
 	 * Constructs a space invader game
 	 */
@@ -76,7 +87,7 @@ public class SpaceInvader extends GWindowEventAdapter {
 	/**
 	 * Initializes the game (draw the background, aliens, and space ship)
 	 */
-	private void initializeGame() {
+	public void initializeGame() {
 		// Clear the window
 		this.window.erase();
 
@@ -98,6 +109,9 @@ public class SpaceInvader extends GWindowEventAdapter {
 
 		// ArrayList of aliens
 		this.aliens = new ArrayList<Alien>();
+		
+		//! ArrayList of healign stars
+		this.healingStar = new ArrayList<HealingStar>();
 
 		// Create 12 aliens
 		// Initial location of the aliens
@@ -110,6 +124,11 @@ public class SpaceInvader extends GWindowEventAdapter {
 			y = y1 + (int)(Math.random() * (y2 - y1));
 			this.aliens.add(new Alien(this.window, new Point(x, y)));
 			x += 6 * Alien.RADIUS;
+		}
+
+		for(int i = 0; i < 1; i++) {
+			y = y1 + (int)(Math.random() * (y2 - y1));
+			this.healingStar.add(new HealingStar(this.window, new Point(x, y)));	
 		}
 
 		// Create the space ship at the bottom of the window
@@ -266,15 +285,85 @@ public class SpaceInvader extends GWindowEventAdapter {
 		// Move the aliens
 		for (Alien a : aliens) {
 			a.move();
+
+			//! find every aliens locations and spaceship location
+			int xLeft = a.getBoundingBox().getX();
+			int xRight = a.getBoundingBox().getX() + a.getBoundingBox().getWidth();
+			int xBottom = a.getBoundingBox().getY();
+			int sLeft = spaceShip.getBoundingBox().getX();
+			int sRight = spaceShip.getBoundingBox().getX() + spaceShip.getBoundingBox().getWidth();
+			int sTop = spaceShip.getBoundingBox().getY();
+	
+			//! finding is space ship damaged or not?
+			if(xLeft == sLeft  && sRight == xRight && sTop == xBottom){
+				//! Since the spaceship is same width as aliens.
+				shipLives --;
+			}
+			
 		}
 
+		for (HealingStar star : healingStar) {
+			star.move();
+		}
+
+		
 		// Move the space ship
 		this.spaceShip.move();
 
 		// Display it all
 		this.window.resumeRepaints();
-	}
 
+		//! checking the lives of the ship
+		if(shipLives == 0) {
+			if (anotherGame(lostMessage)) {
+				initializeGame();
+				shipLives = 3;
+			} else {
+				System.exit(0);	
+			}	
+		}
+		
+		//! show lives of the ship
+		Rectangle livesOfShipRectangle = new Rectangle(520, 130, 250,80, Color.blue, true);	
+		String strLives = "" + shipLives;
+		TextShape livesofShapeText = new TextShape(strLives, 535, 170, Color.CYAN);
+		
+		Font shipLiveFont = new Font("Arial", Font.BOLD, 18);
+		String totalLivesStr = "Remaining lives";
+		TextShape livesOfShapesStr = new TextShape(totalLivesStr, 535, 140, Color.CYAN);
+		livesofShapeText.setFont(shipLiveFont);
+		livesOfShapesStr.setFont(shipLiveFont);
+
+		this.window.add(livesOfShipRectangle);
+		this.window.add(livesofShapeText);
+		this.window.add(livesOfShapesStr);
+
+
+		//! show alien numbers on the screen 
+		Rectangle aliensNumberRectangle = new Rectangle(520, 250, 250, 80, Color.LIGHT_GRAY, true);
+		String aliensNumber = "" + aliens.size();
+		TextShape aliensNumberStr = new TextShape("Aliens remaining", 535, 260, Color.BLACK);
+		TextShape aliensNumberText = new TextShape(aliensNumber, 535, 290, Color.BLACK);
+		aliensNumberText.setFont(shipLiveFont);
+		aliensNumberStr.setFont(shipLiveFont);
+		this.window.add(aliensNumberRectangle);
+		this.window.add(aliensNumberText);
+		this.window.add(aliensNumberStr);
+
+
+		//! show user score on the screen 
+		Rectangle userScoreRectangle = new Rectangle(520, 370, 250, 80, Color.magenta, true);
+		userScore = (15 - aliens.size()) * 100;
+		String userScoreStr = "" + userScore;
+		TextShape userScoreShape = new TextShape("Score", 535, 380, Color.BLACK);
+		TextShape userScoreText = new TextShape(userScoreStr, 535, 410, Color.BLACK);
+		userScoreText.setFont(shipLiveFont);
+		userScoreShape.setFont(shipLiveFont);
+		this.window.add(userScoreRectangle);
+		this.window.add(userScoreShape);
+		this.window.add(userScoreText);
+	}
+ 
 	/**
 	 * Does the player want to play again?
 	 */
